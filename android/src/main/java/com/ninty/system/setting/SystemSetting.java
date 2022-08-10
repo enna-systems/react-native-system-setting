@@ -303,8 +303,8 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                         && !notificationManager.isNotificationPolicyAccessGranted()) {
                     Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
+                    // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.getCurrentActivity().startActivity(intent);
                 }
             }
             Log.e(TAG, "err", e);
