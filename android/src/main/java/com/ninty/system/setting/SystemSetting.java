@@ -298,13 +298,19 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
         } catch (SecurityException e) {
             if (val == 0) {
                 Log.w(TAG, "setVolume(0) failed. See https://github.com/c19354837/react-native-system-setting/issues/48");
-                NotificationManager notificationManager =
-                        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                        && !notificationManager.isNotificationPolicyAccessGranted()) {
-                    Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-                    mContext.startActivity(intent);
+                try {
+                    am.setStreamVolume(volType, (int) (0.1 * am.getStreamMaxVolume(volType)), flags);
+                    Log.w(TAG, "setVolume(0.1)");
+                } catch (Exception ex) {
+                    Log.e(TAG, "err setting volume to 0.1", ex);
                 }
+                // NotificationManager notificationManager =
+                //         (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                //         && !notificationManager.isNotificationPolicyAccessGranted()) {
+                //     Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                //     mContext.startActivity(intent);
+                // }
             }
             Log.e(TAG, "err", e);
         }
